@@ -36,11 +36,15 @@ public class Card {
     }
 
     public boolean canGoOnTopOf(Card another) {
-        if (CardValue.WILD.equals(value) || CardValue.WILD_DRAW.equals(value)) {
+        if (isWildCard()) {
             return true;
         }
 
         return season.equals(another.season) || (value == null || value.equals(another.value));
+    }
+
+    public boolean isWildCard() {
+        return CardValue.WILD.equals(value) || CardValue.WILD_DRAW.equals(value);
     }
 
 }

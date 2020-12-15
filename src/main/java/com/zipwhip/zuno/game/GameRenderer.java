@@ -61,7 +61,7 @@ public class GameRenderer {
 
     public String renderCard(final Card card) {
         return (card.getValue() != null ? cards[card.getValue().ordinal()] : "") +
-                seasons[card.getSeason().ordinal()];
+                (card.isWildCard() ? "" : seasons[card.getSeason().ordinal()]);
     }
 
     public String renderPlayerCards(final Player player) {

@@ -1,0 +1,13 @@
+spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+    packages:
+      trust-all: true
+
+zuno:
+  hash-id:
+    salt: very good but brick not hit back
+  zipwhip:
+    enabled: false
+  jms:
+    queue: messages

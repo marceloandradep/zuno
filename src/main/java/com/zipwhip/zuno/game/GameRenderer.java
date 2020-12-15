@@ -41,10 +41,18 @@ public class GameRenderer {
         final List<Player> players = game.getPlayers();
         final StringBuilder stringBuilder = new StringBuilder();
 
+        int playersPerRow = 3;
+        int playersCount = 0;
+
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
 
-            if (i > 0) {
+            if (playersCount == playersPerRow) {
+                playersCount = 0;
+                stringBuilder.append("\n");
+            }
+
+            if (playersCount > 0) {
                 stringBuilder.append("    ");
             }
 
@@ -54,6 +62,8 @@ public class GameRenderer {
                     .append(i + 1)
                     .append(". ")
                     .append(renderPlayerDetail(player, detail));
+
+            playersCount++;
         }
 
         return stringBuilder.toString();
@@ -69,8 +79,16 @@ public class GameRenderer {
 
         List<Card> cards = player.getCards();
 
+        int cardsPerRow = 3;
+        int cardCount = 0;
+
         for (int i = 0; i < cards.size(); i++) {
-            if (i > 0) {
+            if (cardCount == cardsPerRow) {
+                cardCount = 0;
+                stringBuilder.append("\n");
+            }
+
+            if (cardCount > 0) {
                 stringBuilder.append("  ");
             }
 
@@ -78,6 +96,8 @@ public class GameRenderer {
                     .append(i + 1)
                     .append(". ")
                     .append(renderCard(cards.get(i)));
+
+            cardCount++;
         }
 
         return stringBuilder.toString();

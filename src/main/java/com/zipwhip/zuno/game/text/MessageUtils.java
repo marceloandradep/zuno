@@ -111,7 +111,7 @@ public class MessageUtils {
 
     public String cardsInfo(Game game, Player player) {
         return String.format(
-                "[ %s ]\n\nYour cards: %s.",
+                "[ %s ]\n\nYour cards:\n%s.",
                 gameRenderer.renderCard(game.getDiscardPile().peek()),
                 gameRenderer.renderPlayerCards(player));
     }

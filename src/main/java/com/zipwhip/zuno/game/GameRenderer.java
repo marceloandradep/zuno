@@ -56,7 +56,14 @@ public class GameRenderer {
                 stringBuilder.append("    ");
             }
 
-            String detail = player.equals(recipient) ? "you" : String.valueOf(player.numCards());
+            String detail;
+            if (player.equals(recipient)) {
+                detail = "you";
+            } else if (player.numCards() == 1 && !player.isMustSayUno()) {
+                detail = "uno"; // marks that the player said uno already
+            } else {
+                detail = String.valueOf(player.numCards());
+            }
 
             stringBuilder
                     .append(i + 1)

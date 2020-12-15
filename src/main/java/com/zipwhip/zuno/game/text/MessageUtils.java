@@ -105,6 +105,16 @@ public class MessageUtils {
                 playOrKeepInstructions());
     }
 
+    public String someoneHasNotCalledUnoMessage(Player player) {
+        return String.format(
+                "%s has not called uno and was penalized.",
+                gameRenderer.renderPlayerAvatar(player));
+    }
+
+    public String youHaveNotCalledUnoMessage() {
+        return "You have not called uno and were penalized";
+    }
+
     public String gameClosed(String source) {
         return String.format("The game was closed by %s", source);
     }

@@ -1,8 +1,11 @@
 package com.zipwhip.zuno.game.commands;
 
 import com.zipwhip.zuno.exceptions.InvalidCommandException;
+import com.zipwhip.zuno.game.Game;
 import com.zipwhip.zuno.game.GameManager;
+import com.zipwhip.zuno.game.Player;
 import com.zipwhip.zuno.game.text.MessageUtils;
+import com.zipwhip.zuno.service.NotificationDispatcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +15,7 @@ public class CallUno implements Command {
 
     private final GameManager gameManager;
     private final MessageUtils messageUtils;
+    private final NotificationDispatcher notificationDispatcher;
 
     @Override
     public String keyword() {
@@ -36,6 +40,26 @@ public class CallUno implements Command {
             }
         }
 
-        gameManager.uno(source, index);
+        Game game = gameManager.uno(source, index);
+
+        if (index != null) {
+            Player penalizedPlayer = game.getPlayers().get(index);
+
+            game.getPlayers().forEach(player -> {
+                if (player.equals(penalizedPlayer)) {
+                    sendYouHaveNotCalledUnoMessage(player);
+                } else {
+                    sendSomeoneHasNotCalledUnoMessage(player, penalizedPlayer);
+                }
+            });
+        }
     }
+    private void sendSomeoneHasNotCalledUnoMessage(Player player, Player penalizedPlayer) {
+        notificationDispatcher.notifyPlayer(player, messageUtils.someoneHasNotCalledUnoMessage(penalizedPlayer));
+    }
+
+    private void sendYouHaveNotCalledUnoMessage(Player player) {
+        notificationDispatcher.notifyPlayer(player, messageUtils.youHaveNotCalledUnoMessage());
+    }
+
 }

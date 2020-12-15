@@ -1,6 +1,7 @@
 package com.zipwhip.zuno.game;
 
 import com.zipwhip.zuno.exceptions.FullGameException;
+import com.zipwhip.zuno.exceptions.InvalidUnoCallException;
 import com.zipwhip.zuno.exceptions.NotEnoughPlayersException;
 import com.zipwhip.zuno.exceptions.PlayerAlreadyJoinedException;
 import com.zipwhip.zuno.game.deck.Card;
@@ -395,6 +396,24 @@ public class GameTest {
 
         // when
         game.uno(game.getPlayers().indexOf(player));
+
+        // then
+        assertThat(player.numCards()).isEqualTo(expectedCards);
+        assertThat(game.getCurrentPlayer()).isEqualTo(player);
+        assertThat(player.isMustSayUno()).isFalse();
+    }
+
+    @Test
+    public void testPlayerSayInvalidUno() {
+        // given
+        Game game = createDefaultStartedGame();
+        Player player = game.getCurrentPlayer();
+
+        int expectedCards = player.numCards();
+
+        // then
+        assertThatExceptionOfType(InvalidUnoCallException.class)
+                .isThrownBy(() -> game.uno(game.getPlayers().indexOf(player)));
 
         // then
         assertThat(player.numCards()).isEqualTo(expectedCards);

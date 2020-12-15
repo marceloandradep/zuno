@@ -1,9 +1,6 @@
 package com.zipwhip.zuno.game;
 
-import com.zipwhip.zuno.exceptions.CardDoesNotMatchException;
-import com.zipwhip.zuno.exceptions.FullGameException;
-import com.zipwhip.zuno.exceptions.NotEnoughPlayersException;
-import com.zipwhip.zuno.exceptions.PlayerAlreadyJoinedException;
+import com.zipwhip.zuno.exceptions.*;
 import com.zipwhip.zuno.game.deck.Card;
 import com.zipwhip.zuno.game.deck.CardValue;
 import com.zipwhip.zuno.game.deck.Pile;
@@ -188,6 +185,8 @@ public class Game {
         if (player.isMustSayUno()) {
             playerDraw(player, 2);
             player.uno();
+        } else {
+            throw new InvalidUnoCallException();
         }
     }
 

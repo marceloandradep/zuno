@@ -48,7 +48,7 @@ public class MessageUtils {
     }
 
     public String chatMessage(Player player, String message) {
-        return String.format("%s says: %s", gameRenderer.renderPlayer(player), message);
+        return String.format("%s says: %s", gameRenderer.renderPlayerAvatar(player), message);
     }
 
     public String gameCreatedMessage(Game game) {
@@ -56,34 +56,34 @@ public class MessageUtils {
                 "A game was created successfully.\n\nYour avatar is %s.\n\n" +
                         "Ask your friends to text '/join %s'. " +
                         "When ready text '/start' or '/help for instructions'.",
-                gameRenderer.renderPlayer(game.getOwner()), game.getId());
+                gameRenderer.renderPlayerAvatar(game.getOwner()), game.getId());
     }
 
     public String youHaveJoinedMessage(Player player) {
         return String.format(
                 "You've joined the game. Your avatar is %s. Waiting the game to start.\n\n%s",
-                gameRenderer.renderPlayer(player),
+                gameRenderer.renderPlayerAvatar(player),
                 help());
     }
 
     public String aPlayerHasJoinedMessage(Player player) {
         return String.format(
                 "Player %s joined the game.",
-                gameRenderer.renderPlayer(player));
+                gameRenderer.renderPlayerAvatar(player));
     }
 
     public String playerTurnMessage(Game game, Player player) {
         return String.format(
                 "It's your turn.\n\n%s\n\n%s",
-                allPlayers(game),
+                allPlayers(game, player),
                 cardsInfo(game, player));
     }
 
     public String playerOutOfTurnMessage(Game game, Player player) {
         return String.format(
                 "It's %s's turn.\n\n%s\n\n%s",
-                gameRenderer.renderPlayer(game.getCurrentPlayer()),
-                allPlayers(game),
+                gameRenderer.renderPlayerAvatar(game.getCurrentPlayer()),
+                allPlayers(game, player),
                 cardsInfo(game, player));
     }
 
@@ -98,12 +98,12 @@ public class MessageUtils {
                 gameRenderer.renderPlayerCards(player));
     }
 
-    public String allPlayers(Game game) {
-        return gameRenderer.renderPlayers(game);
+    public String allPlayers(Game game, Player recipient) {
+        return gameRenderer.renderPlayers(game, recipient);
     }
 
     public String loser(Game game) {
-        return String.format("Player %s won the game!", gameRenderer.renderPlayer(game.getWinner()));
+        return String.format("Player %s won the game!", gameRenderer.renderPlayerAvatar(game.getWinner()));
     }
 
     public String winner() {

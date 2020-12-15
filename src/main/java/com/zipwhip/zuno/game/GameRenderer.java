@@ -29,27 +29,31 @@ public class GameRenderer {
                 Emojis.skip, Emojis.drawTwo, Emojis.reverse, Emojis.wild, Emojis.wildDraw);
     }
 
-    public String renderPlayer(final Player player) {
-        return renderPlayer(player, false);
+    public String renderPlayerAvatar(final Player player) {
+        return players[player.getAvatar()];
     }
 
-    public String renderPlayer(final Player player, boolean showNumOfCards) {
-        return players[player.getAvatar()] +
-                (showNumOfCards ? "  (" + player.numCards() + ")" : "");
+    public String renderPlayerDetail(final Player player, String detail) {
+        return String.format("%s  (%s)", players[player.getAvatar()], detail);
     }
 
-    public String renderPlayers(final Game game) {
+    public String renderPlayers(final Game game, Player recipient) {
         final List<Player> players = game.getPlayers();
         final StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+
             if (i > 0) {
                 stringBuilder.append("    ");
             }
+
+            String detail = player.equals(recipient) ? "you" : String.valueOf(player.numCards());
+
             stringBuilder
                     .append(i + 1)
                     .append(". ")
-                    .append(renderPlayer(players.get(i), true));
+                    .append(renderPlayerDetail(player, detail));
         }
 
         return stringBuilder.toString();

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DrawCard implements Command {
+public class KeepCard implements Command {
 
     private final GameManager gameManager;
     private final MessageUtils messageUtils;
@@ -18,12 +18,12 @@ public class DrawCard implements Command {
 
     @Override
     public String keyword() {
-        return "/draw";
+        return "/keep";
     }
 
     @Override
     public void execute(String source, String[] args) {
-        Game game = gameManager.drawCard(source);
+        Game game = gameManager.keepCard(source);
 
         game.getPlayers().forEach(player -> {
             if (player.equals(game.getCurrentPlayer())) {
@@ -35,10 +35,10 @@ public class DrawCard implements Command {
     }
 
     private void sendOtherPlayersMessage(Game game, Player player) {
-        notificationDispatcher.notifyPlayer(player, messageUtils.playerHasDrewCardMessage(game));
+        notificationDispatcher.notifyPlayer(player, messageUtils.playerOutOfTurnMessage(game, player));
     }
 
     private void sendCurrentPlayerMessage(Game game, Player player) {
-        notificationDispatcher.notifyPlayer(player, messageUtils.youHaveDrewCardMessage(game, player));
+        notificationDispatcher.notifyPlayer(player, messageUtils.playerTurnMessage(game, player));
     }
 }

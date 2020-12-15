@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 
 public class Game {
 
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     private final List<Integer> randomizedAvatarList =
             IntStream
@@ -43,6 +43,7 @@ public class Game {
     private int currentPlayerIndex = -1;
     private int orientation = 0;
 
+    @Getter
     private Pile drawPile;
 
     @Getter
@@ -84,7 +85,21 @@ public class Game {
     }
 
     public void draw() {
-        getCurrentPlayer().take(drawPile.pop());
+        if (isPlaying()) {
+            state = GameState.DRAWING;
+            getCurrentPlayer().take(drawPile.pop());
+        } else {
+            throw new IllegalStateException("You can only draw once.");
+        }
+    }
+
+    public void keep() {
+        if (isDrawing()) {
+            state = GameState.PLAYING;
+            endTurn();
+        } else {
+            throw new IllegalStateException("You have to draw first.");
+        }
     }
 
     public void playCard(int cardIndex) {
@@ -98,6 +113,10 @@ public class Game {
         Card cardAtDiscard = discardPile.peek();
 
         if (playerCard.canGoOnTopOf(cardAtDiscard)) {
+            if (isDrawing()) {
+                state = GameState.PLAYING;
+            }
+
             discardPile.push(player.discard(cardIndex));
 
             if (uno) {
@@ -294,6 +313,10 @@ public class Game {
 
     public boolean isPlaying() {
         return GameState.PLAYING.equals(state);
+    }
+
+    public boolean isDrawing() {
+        return GameState.DRAWING.equals(state);
     }
 
     public boolean isPickingSeason() {

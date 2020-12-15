@@ -4,6 +4,7 @@ public enum GameState {
 
     WAITING,
     PLAYING,
+    DRAWING,
     PICKING_SEASON,
     FINISHED;
 

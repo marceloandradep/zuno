@@ -92,6 +92,17 @@ public class GameManager {
         return game;
     }
 
+    public Game keepCard(final String source) {
+        Game game = findGameBySource(source);
+
+        if (!game.getCurrentPlayer().getSource().equals(source)) {
+            throw new NotPlayerTurnException();
+        }
+
+        game.keep();
+        return game;
+    }
+
     public Game uno(final String source, final Integer index) {
         Game game = findGameBySource(source);
 

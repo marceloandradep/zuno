@@ -109,6 +109,85 @@ public class GameTest {
         // then
         assertThat(game.getCurrentPlayer()).isEqualTo(expectedCurrentPlayer);
         assertThat(game.getCurrentPlayer().numCards()).isEqualTo(expectedCards);
+        assertThat(game.isDrawing()).isTrue();
+    }
+
+    @Test
+    public void testDrawCardTwice() {
+        // given
+        Game game = createDefaultStartedGame();
+        Player expectedCurrentPlayer = game.getCurrentPlayer();
+        int expectedCards = expectedCurrentPlayer.numCards() + 1;
+
+        // when
+        game.draw();
+
+        // then
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(game::draw);
+
+        assertThat(game.getCurrentPlayer()).isEqualTo(expectedCurrentPlayer);
+        assertThat(game.getCurrentPlayer().numCards()).isEqualTo(expectedCards);
+        assertThat(game.isDrawing()).isTrue();
+    }
+
+    @Test
+    public void testKeepWithoutDrawing() {
+        // given
+        Game game = createDefaultStartedGame();
+        Player expectedCurrentPlayer = game.getCurrentPlayer();
+        int expectedCards = expectedCurrentPlayer.numCards();
+
+        // then
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(game::keep);
+
+        assertThat(game.getCurrentPlayer()).isEqualTo(expectedCurrentPlayer);
+        assertThat(game.getCurrentPlayer().numCards()).isEqualTo(expectedCards);
+        assertThat(game.isPlaying()).isTrue();
+    }
+
+    @Test
+    public void testDrawAndKeepCard() {
+        // given
+        Game game = createDefaultStartedGame();
+        Player player = game.getCurrentPlayer();
+        Player expectedNextPlayer = game.nextPlayer();
+        int expectedCards = expectedNextPlayer.numCards() + 1;
+
+        // when
+        game.draw();
+        game.keep();
+
+        // then
+        assertThat(game.getCurrentPlayer()).isEqualTo(expectedNextPlayer);
+        assertThat(player.numCards()).isEqualTo(expectedCards);
+        assertThat(game.isPlaying()).isTrue();
+    }
+
+    @Test
+    public void testDrawAndPlayCard() {
+        // given
+        Game game = createDefaultStartedGame();
+        Player player = game.getCurrentPlayer();
+
+        Card topCard = new Card(Season.SPRING, CardValue.ZERO);
+        Card drawCard = new Card(Season.SPRING, CardValue.EIGHT);
+
+        game.getDiscardPile().push(topCard);
+        game.getDrawPile().push(drawCard);
+
+        Player expectedNextPlayer = game.nextPlayer();
+        int expectedCards = expectedNextPlayer.numCards();
+
+        // when
+        game.draw();
+        game.playCard(player.getCards().size() - 1);
+
+        // then
+        assertThat(game.getCurrentPlayer()).isEqualTo(expectedNextPlayer);
+        assertThat(player.numCards()).isEqualTo(expectedCards);
+        assertThat(game.isPlaying()).isTrue();
     }
 
     @Test

@@ -25,6 +25,10 @@ public class MessageUtils {
                 "Text '/draw' to draw a card from the pile.";
     }
 
+    public String playOrKeepInstructions() {
+        return "Text '/play {card_number}' to play or '/keep' to keep the card and end your turn.";
+    }
+
     public String pickSeasonInstructions() {
         return String.format(
                 "Pick a season %s.\n\nText '/play {season_number}' to play.",
@@ -74,7 +78,7 @@ public class MessageUtils {
 
     public String playerTurnMessage(Game game, Player player) {
         return String.format(
-                "It's your turn.\n\n%s\n\n%s",
+                "It's YOUR turn.\n\n%s\n\n%s",
                 allPlayers(game, player),
                 cardsInfo(game, player));
     }
@@ -85,6 +89,20 @@ public class MessageUtils {
                 gameRenderer.renderPlayerAvatar(game.getCurrentPlayer()),
                 allPlayers(game, player),
                 cardsInfo(game, player));
+    }
+
+    public String playerHasDrewCardMessage(Game game) {
+        return String.format(
+                "%s has drew a card.",
+                gameRenderer.renderPlayerAvatar(game.getCurrentPlayer()));
+    }
+
+    public String youHaveDrewCardMessage(Game game, Player player) {
+        return String.format(
+                "It's YOUR turn.\n\n%s\n\n%s\n\n%s",
+                allPlayers(game, player),
+                cardsInfo(game, player),
+                playOrKeepInstructions());
     }
 
     public String gameClosed(String source) {

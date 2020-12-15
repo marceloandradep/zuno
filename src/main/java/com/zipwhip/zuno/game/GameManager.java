@@ -92,15 +92,15 @@ public class GameManager {
         return game;
     }
 
-    public Game uno(final String source, final Integer avatar) {
+    public Game uno(final String source, final Integer index) {
         Game game = findGameBySource(source);
 
         synchronized (this) {
-            if (avatar == null) {
+            if (index == null) {
                 Player player = findPlayerBySource(source);
                 game.uno(player);
             } else {
-                game.uno(avatar);
+                game.uno(index);
             }
         }
 

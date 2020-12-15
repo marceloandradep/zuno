@@ -39,7 +39,7 @@ public class GameRenderer {
     }
 
     public String renderPlayers(final Game game) {
-        final List<Player> players = game.getTurnSequence();
+        final List<Player> players = game.getPlayers();
         final StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < players.size(); i++) {
@@ -47,7 +47,7 @@ public class GameRenderer {
                 stringBuilder.append("    ");
             }
             stringBuilder
-                    .append(players.get(i).getAvatar())
+                    .append(i + 1)
                     .append(". ")
                     .append(renderPlayer(players.get(i), true));
         }

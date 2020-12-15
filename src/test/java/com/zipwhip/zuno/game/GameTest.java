@@ -315,7 +315,7 @@ public class GameTest {
         int expectedCards = 3;
 
         // when
-        game.uno(player.getAvatar());
+        game.uno(game.getPlayers().indexOf(player));
 
         // then
         assertThat(player.numCards()).isEqualTo(expectedCards);

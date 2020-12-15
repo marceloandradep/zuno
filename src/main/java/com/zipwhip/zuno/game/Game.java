@@ -160,15 +160,15 @@ public class Game {
         self.uno();
     }
 
-    public void uno(int avatar) {
-        for (Player player : players) {
-            if (player.getAvatar().equals(avatar)) {
-                if (player.isMustSayUno()) {
-                    playerDraw(player, 2);
-                    player.uno();
-                }
-                break;
-            }
+    public void uno(int index) {
+        if (index < 0 || index >= players.size()) {
+            throw new IllegalArgumentException("Invalid player number.");
+        }
+
+        Player player = players.get(index);
+        if (player.isMustSayUno()) {
+            playerDraw(player, 2);
+            player.uno();
         }
     }
 

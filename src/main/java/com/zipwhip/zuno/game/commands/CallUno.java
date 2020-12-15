@@ -25,17 +25,17 @@ public class CallUno implements Command {
                     "Invalid syntax. " + messageUtils.callUnoInstructions());
         }
 
-        Integer avatar = null;
+        Integer index = null;
 
         if (args.length == 2) {
             try {
-                avatar = Integer.parseInt(args[1]);
+                index = Integer.parseInt(args[1]) - 1;
             } catch (NumberFormatException nfe) {
                 throw new InvalidCommandException(
                         "Invalid syntax. " + messageUtils.callUnoInstructions());
             }
         }
 
-        gameManager.uno(source, avatar);
+        gameManager.uno(source, index);
     }
 }

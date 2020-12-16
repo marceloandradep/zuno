@@ -387,7 +387,7 @@ public class GameTest {
         Game game = createDefaultStartedGame();
         Player player = game.getCurrentPlayer();
 
-        while (!player.isMustSayUno()) {
+        while (!player.isMustCallUno()) {
             player.discard(0);
         }
 
@@ -399,7 +399,7 @@ public class GameTest {
         // then
         assertThat(player.numCards()).isEqualTo(expectedCards);
         assertThat(game.getCurrentPlayer()).isEqualTo(player);
-        assertThat(player.isMustSayUno()).isFalse();
+        assertThat(player.isMustCallUno()).isFalse();
     }
 
     @Test
@@ -417,7 +417,7 @@ public class GameTest {
         // then
         assertThat(player.numCards()).isEqualTo(expectedCards);
         assertThat(game.getCurrentPlayer()).isEqualTo(player);
-        assertThat(player.isMustSayUno()).isFalse();
+        assertThat(player.isMustCallUno()).isFalse();
     }
 
     @Test
@@ -426,7 +426,7 @@ public class GameTest {
         Game game = createDefaultStartedGame();
         Player player = game.getCurrentPlayer();
 
-        while (!player.isMustSayUno()) {
+        while (!player.isMustCallUno()) {
             player.discard(0);
         }
 
@@ -438,7 +438,7 @@ public class GameTest {
         // then
         assertThat(player.numCards()).isEqualTo(expectedCards);
         assertThat(game.getCurrentPlayer()).isEqualTo(player);
-        assertThat(player.isMustSayUno()).isFalse();
+        assertThat(player.isMustCallUno()).isFalse();
     }
 
     @Test
@@ -447,14 +447,14 @@ public class GameTest {
         Game game = createDefaultStartedGame();
         Player player = game.getCurrentPlayer();
 
-        while (!player.isMustSayUno()) {
+        while (!player.isMustCallUno()) {
             player.discard(0);
         }
 
         player.take(new Card(Season.SPRING, CardValue.EIGHT));
 
         // then
-        assertThat(player.isMustSayUno()).isFalse();
+        assertThat(player.isMustCallUno()).isFalse();
     }
 
     private Game createDefaultNewGame() {

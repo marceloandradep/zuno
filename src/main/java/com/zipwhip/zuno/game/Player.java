@@ -2,34 +2,27 @@ package com.zipwhip.zuno.game;
 
 import com.zipwhip.zuno.game.deck.Card;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
-@EqualsAndHashCode
 public class Player {
 
-    private final String id;
-
-    @EqualsAndHashCode.Exclude
+    private final String id = UUID.randomUUID().toString();
     private final Integer avatar;
-
-    @EqualsAndHashCode.Exclude
     private final String source;
-
-    @EqualsAndHashCode.Exclude
     private final List<Card> cards = new ArrayList<>();
 
-    @EqualsAndHashCode.Exclude
-    private boolean mustSayUno = false;
+    private boolean mustCallUno = false;
 
     public void take(Card card) {
         cards.add(card);
-        mustSayUno = false;
+        mustCallUno = false;
     }
 
     public Card getCardAt(int cardIndex) {
@@ -39,17 +32,29 @@ public class Player {
     public Card discard(int cardIndex) {
         Card card = cards.remove(cardIndex);
         if (numCards() == 1) {
-            mustSayUno = true;
+            mustCallUno = true;
         }
         return card;
     }
 
     public void uno() {
-        mustSayUno = false;
+        mustCallUno = false;
     }
 
     public int numCards() {
         return cards.size();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return id.equals(player.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

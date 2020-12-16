@@ -60,7 +60,7 @@ public class Game {
         }
 
         final Player player =
-                new Player(UUID.randomUUID().toString(), nextRandomAvatar(), source);
+                new Player(nextRandomAvatar(), source);
 
         players.add(player);
 
@@ -181,7 +181,7 @@ public class Game {
         }
 
         Player player = players.get(index);
-        if (player.isMustSayUno()) {
+        if (player.isMustCallUno()) {
             playerDraw(player, 2);
             player.uno();
         } else {

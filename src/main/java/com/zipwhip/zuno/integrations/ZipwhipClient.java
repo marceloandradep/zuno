@@ -3,6 +3,7 @@ package com.zipwhip.zuno.integrations;
 import com.zipwhip.zuno.config.ZunoProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,6 +30,7 @@ public class ZipwhipClient {
     private final RestTemplate restTemplate;
     private final ZunoProperties zunoProperties;
 
+    @Value("${zuno.zipwhip.session-id}")
     private String sessionId;
 
     public void sendText(String destination, String text) {

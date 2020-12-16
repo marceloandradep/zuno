@@ -26,6 +26,7 @@ public class ZunoProperties {
     @Data
     public static class Zipwhip {
         private boolean isEnabled;
+        private String sessionId;
         private String username;
         private String password;
     }

@@ -37,14 +37,13 @@ public class Game {
 
     private GameState state = GameState.WAITING;
 
-    private int currentPlayerIndex = -1;
-    private int orientation = 0;
-
     @Getter
     private Pile drawPile;
 
     @Getter
     private Pile discardPile;
+
+    private TurnController turnController;
 
     public Game(String id, String source) {
         this.id = id;
@@ -205,13 +204,12 @@ public class Game {
     }
 
     public void reverse() {
-        orientation *= -1;
-        endTurn();
+        turnController.reverse();
+        turnController.endTurn();
     }
 
     public void skip() {
-        endTurn();
-        endTurn();
+        turnController.skipNext();
     }
 
     public void finishGame() {
@@ -229,67 +227,26 @@ public class Game {
         }
     }
 
-    public int nextPlayerIndex() {
-        return indexAfter(currentPlayerIndex);
-    }
-
-    public int indexAfter(int startingAt) {
-        int index = startingAt + orientation;
-
-        if (index == players.size()) {
-            index = 0;
-        } else if (index < 0) {
-            index = players.size() - 1;
-        }
-
-        return index;
-    }
-
-    public int indexBefore(int startingAt) {
-        int index = startingAt - orientation;
-
-        if (index == players.size()) {
-            index = 0;
-        } else if (index < 0) {
-            index = players.size() - 1;
-        }
-
-        return index;
-    }
-
     public Player nextPlayer() {
-        return players.get(nextPlayerIndex());
+        return players.get(turnController.nextIndex());
     }
 
     public Player playerAfter(Player player) {
         int startingIndex = getPlayers().indexOf(player);
-        return players.get(indexAfter(startingIndex));
+        return players.get(turnController.indexAfter(startingIndex));
     }
 
     public Player playerBefore(Player player) {
         int startingIndex = getPlayers().indexOf(player);
-        return players.get(indexBefore(startingIndex));
+        return players.get(turnController.indexBefore(startingIndex));
     }
 
     public void endTurn() {
-        currentPlayerIndex = nextPlayerIndex();
-    }
-
-    public List<Player> getTurnSequence() {
-        List<Player> turnSequence = new ArrayList<>();
-
-        int index = currentPlayerIndex;
-
-        for (int i = 0; i < players.size(); i++) {
-            turnSequence.add(players.get(index));
-            index = indexAfter(index);
-        }
-
-        return turnSequence;
+        turnController.endTurn();
     }
 
     public Player getCurrentPlayer() {
-        return players.get(currentPlayerIndex);
+        return players.get(turnController.getCurrentIndex());
     }
 
     public boolean isFull() {
@@ -327,8 +284,9 @@ public class Game {
     }
 
     private void initializeGame() {
-        currentPlayerIndex = random.nextInt(players.size());
-        orientation = 1;
+        turnController =
+                new TurnController(players.size(),
+                        random.nextInt(players.size()));
 
         drawPile = Pile.newDeck();
         discardPile = Pile.empty();

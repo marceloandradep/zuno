@@ -66,7 +66,6 @@ public class GameTest {
         // then
         assertThat(game.isPlaying()).isTrue();
         assertThat(game.getCurrentPlayer()).isNotNull();
-        assertThat(game.getTurnSequence().size()).isEqualTo(game.getPlayers().size());
         assertThat(game.getDiscardPile().peek()).isNotNull();
 
         for (Player player : game.getPlayers()) {
